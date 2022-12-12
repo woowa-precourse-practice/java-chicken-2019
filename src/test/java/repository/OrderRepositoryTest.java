@@ -1,5 +1,9 @@
-package domain;
+package repository;
 
+import domain.Menu;
+import domain.Order;
+import domain.Quantity;
+import domain.Table;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;

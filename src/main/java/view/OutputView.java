@@ -1,9 +1,9 @@
 package view;
 
 import domain.Menu;
-import domain.OrderRepository;
 import domain.Table;
 import dto.OrdersResponseDto;
+import repository.OrderRepository;
 
 import java.util.List;
 
