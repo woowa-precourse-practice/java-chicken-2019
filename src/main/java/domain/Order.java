@@ -25,6 +25,10 @@ public class Order {
         quantity = quantity.sum(order.quantity);
     }
 
+    public int calculatePayment() {
+        return quantity.calculatePayment(menu.getPrice());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -33,6 +33,10 @@ public class Quantity {
         return new Quantity(this.amount + quantity.amount);
     }
 
+    public int calculatePayment(int price) {
+        return price * amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
