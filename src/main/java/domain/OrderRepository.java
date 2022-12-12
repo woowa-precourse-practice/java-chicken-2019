@@ -1,18 +1,30 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class OrderRepository {
 
-    private static final List<Order> orders = new ArrayList<>();
+    private static final Set<Order> orders = new HashSet<>();
 
     public static void save(Order order) {
-        orders.add(order);
+        orders.add(update(order));
     }
 
-    public static List<Order> get() {
-        return Collections.unmodifiableList(orders);
+    private static Order update(Order order) {
+        return orders.stream()
+                .filter(existingOrder -> existingOrder.equals(order))
+                .peek(existingOrder -> existingOrder.combine(order))
+                .findFirst()
+                .orElse(order);
+    }
+
+    public static Set<Order> get() {
+        return Collections.unmodifiableSet(orders);
+    }
+
+    public static void clearByTable(Table table) {
+        orders.removeIf(order -> order.hasSameTable(table));
     }
 }
