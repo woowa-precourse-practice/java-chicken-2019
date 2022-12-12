@@ -37,6 +37,10 @@ public class Order {
         return menu;
     }
 
+    public Table getTable() {
+        return table;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

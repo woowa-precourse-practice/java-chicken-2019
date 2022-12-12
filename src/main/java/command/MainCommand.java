@@ -3,7 +3,7 @@ package command;
 import java.util.Arrays;
 
 public enum MainCommand {
-    REGISTER(1, "주문등록"),
+    ORDER(1, "주문등록"),
     PAYMENT(2, "결제하기"),
     QUIT(3, "프로그램 종료");
 
@@ -25,6 +25,19 @@ public enum MainCommand {
 
     private boolean isSameCommand(int command) {
         return this.command == command;
+    }
+
+
+    public boolean isOrder() {
+        return this == ORDER;
+    }
+
+    public boolean isPayment() {
+        return this == PAYMENT;
+    }
+
+    public boolean isQuit() {
+        return this == QUIT;
     }
 
     @Override

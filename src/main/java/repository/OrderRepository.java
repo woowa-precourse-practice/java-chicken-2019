@@ -6,6 +6,7 @@ import domain.Table;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class OrderRepository {
 
@@ -34,5 +35,11 @@ public class OrderRepository {
     public static boolean hasTable(Table table) {
         return orders.stream()
                 .anyMatch(order -> order.hasSameTable(table));
+    }
+
+    public static Set<Order> findByTable(Table table) {
+        return orders.stream()
+                .filter(order -> order.hasSameTable(table))
+                .collect(Collectors.toSet());
     }
 }
