@@ -43,6 +43,7 @@ public class MainController {
         int totalPayment = calculatePayment(orders);
 
         OutputView.printPayment(totalPayment);
+        OrderRepository.clearByTable(table);
     }
 
     private void progressOrder() {
