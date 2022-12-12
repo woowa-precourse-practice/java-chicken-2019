@@ -17,10 +17,10 @@ public class DiscountPolicy {
     public int apply(int payment, Quantity chickenCount) {
         payment = discountByChickenCount(payment, chickenCount);
 
-        return discountByPaymentMethod(payment, paymentMethod);
+        return discountByPaymentMethod(payment);
     }
 
-    private int discountByPaymentMethod(int payment, PaymentMethod paymentMethod) {
+    private int discountByPaymentMethod(int payment) {
         if (paymentMethod.isCash()) {
             payment *= DISCOUNTED;
         }
