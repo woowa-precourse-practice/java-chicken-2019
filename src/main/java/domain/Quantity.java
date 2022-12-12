@@ -8,6 +8,8 @@ public class Quantity {
     private static final String INVALID_NEGATIVE_QUANTITY = "수량은 음수가 될 수 없습니다";
     private static final int QUANTITY_UPPER_BOUND = 99;
     private static final int QUANTITY_LOWER_BOUND = 0;
+    private static final int DISCOUNT_UNIT = 10;
+    private static final int DISCOUNT_AMOUNT = 10_000;
 
     private final int amount;
 
@@ -35,6 +37,10 @@ public class Quantity {
 
     public int calculatePayment(int price) {
         return price * amount;
+    }
+
+    public int calculateDiscountAmount() {
+        return amount / DISCOUNT_UNIT * DISCOUNT_AMOUNT;
     }
 
     @Override

@@ -29,6 +29,10 @@ public class Order {
         return quantity.calculatePayment(menu.getPrice());
     }
 
+    public Quantity getQuantity() {
+        return quantity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -40,5 +44,9 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(table, menu);
+    }
+
+    public boolean isChicken() {
+        return menu.isChicken();
     }
 }

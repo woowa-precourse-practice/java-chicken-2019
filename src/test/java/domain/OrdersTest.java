@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.ArrayList;
 
@@ -34,5 +36,17 @@ class OrdersTest {
         int totalPayment = orders.calculateTotalPayment();
 
         assertThat(totalPayment).isEqualTo(154_000);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"1:160000", "11:310000", "21: 460000"}, delimiter = ':')
+    void 치킨_갯수에_따른_할인율_계산(int amount, int payment) {
+        orders.add(
+                Order.create(table, MenuRepository.findByNumber(4), Quantity.from(amount))
+        );
+
+        int totalPayment = orders.calculateTotalPayment();
+
+        assertThat(totalPayment).isEqualTo(payment);
     }
 }
