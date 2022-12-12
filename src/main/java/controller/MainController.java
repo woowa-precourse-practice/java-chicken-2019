@@ -21,25 +21,26 @@ import java.util.function.Supplier;
 public class MainController {
 
     private static final String NO_ORDERS_ERROR = "주문 내역이 존재하지 않습니다.";
+    private static final boolean QUIT = false;
+    private static final boolean RUNNABLE = true;
 
     public void run() {
-        while (true) {
+        boolean runnable = RUNNABLE;
+        while (runnable) {
             MainCommand mainCommand = checkError(InputView::inputMainCommand);
             if (mainCommand.isOrder()) {
                 progressOrder();
             }
             if (mainCommand.isPayment()) {
-                progressPayment();
+                checkError(this::progressPayment);
             }
-            if (mainCommand.isQuit()) {
-                break;
-            }
+            runnable = QUIT;
         }
     }
 
     private void progressPayment() {
         Table table = checkError(this::readTable);
-        Orders orders = checkError(() -> createOrder(table));
+        Orders orders = findOrders(table);
         printOrders(orders);
 
         OutputView.printPaymentProcess(table.getNumber());
@@ -49,7 +50,7 @@ public class MainController {
         OrderRepository.clearByTable(table);
     }
 
-    private Orders createOrder(Table table) {
+    private Orders findOrders(Table table) {
         Set<Order> orders = OrderRepository.findByTable(table);
         if (orders.isEmpty()) {
             throw new IllegalArgumentException(NO_ORDERS_ERROR);
@@ -107,6 +108,15 @@ public class MainController {
         } catch (IllegalArgumentException error) {
             OutputView.printError(error);
             return checkError(inputReader);
+        }
+    }
+
+    private void checkError(Runnable inputReader) {
+        try {
+            inputReader.run();
+        } catch (IllegalArgumentException error) {
+            OutputView.printError(error);
+            run();
         }
     }
 }
