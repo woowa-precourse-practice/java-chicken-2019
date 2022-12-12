@@ -33,6 +33,10 @@ public class Order {
         return quantity;
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

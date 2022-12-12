@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class Orders {
@@ -51,5 +52,9 @@ public class Orders {
 
     public void add(Order order) {
         orders.add(order);
+    }
+
+    public Set<Order> get() {
+        return Collections.unmodifiableSet(orders);
     }
 }

@@ -43,6 +43,10 @@ public class Quantity {
         return amount / DISCOUNT_UNIT * DISCOUNT_AMOUNT;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

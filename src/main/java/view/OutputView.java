@@ -3,6 +3,7 @@ package view;
 import domain.Menu;
 import domain.OrderRepository;
 import domain.Table;
+import dto.OrdersResponseDto;
 
 import java.util.List;
 
@@ -46,6 +47,15 @@ public class OutputView {
         for (final Table table : tables) {
             System.out.printf(TABLE_FORMAT, table);
         }
+        System.out.println();
+    }
+
+    public static void printOrders(final OrdersResponseDto responseDto) {
+        System.out.println("## 주문 내역");
+        System.out.println("메뉴 수량 금액");
+
+        responseDto.get()
+                .forEach(System.out::println);
         System.out.println();
     }
 }
