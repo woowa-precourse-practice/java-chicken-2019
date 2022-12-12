@@ -94,7 +94,7 @@ public class MainController {
     private int calculatePayment(Orders orders) {
         PaymentMethod paymentMethod = checkError(InputView::inputPaymentMethod);
 
-        return orders.calculateTotalPayment(paymentMethod);
+        return orders.calculatePayment(paymentMethod);
     }
 
     private void printOrders(Orders orders) {

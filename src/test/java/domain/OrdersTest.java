@@ -35,7 +35,7 @@ class OrdersTest {
 
     @Test
     void 주문_총액_계산() {
-        int totalPayment = orders.calculateTotalPayment(PaymentMethod.CARD);
+        int totalPayment = orders.calculatePayment(PaymentMethod.CARD);
 
         assertThat(totalPayment).isEqualTo(154_000);
     }
@@ -47,14 +47,14 @@ class OrdersTest {
                 Order.create(table, MenuRepository.findByNumber(4), Quantity.from(amount))
         );
 
-        int totalPayment = orders.calculateTotalPayment(PaymentMethod.CARD);
+        int totalPayment = orders.calculatePayment(PaymentMethod.CARD);
 
         assertThat(totalPayment).isEqualTo(payment);
     }
 
     @Test
     void 결제_수단에_따른_할인율_계산() {
-        int totalPayment = orders.calculateTotalPayment(PaymentMethod.CASH);
+        int totalPayment = orders.calculatePayment(PaymentMethod.CASH);
 
         assertThat(totalPayment).isEqualTo(146_300);
     }

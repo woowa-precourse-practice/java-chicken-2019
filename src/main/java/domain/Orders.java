@@ -19,13 +19,13 @@ public class Orders {
         return new Orders(orders);
     }
 
-    public int calculateTotalPayment(PaymentMethod paymentMethod) {
-        int totalPaymentWithoutDiscount = calculateTotalPaymentWithoutDiscount();
+    public int calculatePayment(PaymentMethod paymentMethod) {
+        int payment = addUpPayments();
 
-        return applyDiscount(totalPaymentWithoutDiscount, paymentMethod);
+        return applyDiscount(payment, paymentMethod);
     }
 
-    private int calculateTotalPaymentWithoutDiscount() {
+    private int addUpPayments() {
         return orders.stream()
                 .map(Order::calculatePayment)
                 .reduce(Integer::sum)
@@ -33,12 +33,22 @@ public class Orders {
     }
 
     private int applyDiscount(int payment, PaymentMethod paymentMethod) {
-        Quantity chickenCount = countChicken();
-        payment -= chickenCount.calculateDiscountAmount();
+        payment = discountByChickenCount(payment);
 
+        return discountByPaymentMethod(payment, paymentMethod);
+    }
+
+    private static int discountByPaymentMethod(int payment, PaymentMethod paymentMethod) {
         if (paymentMethod.isCash()) {
             payment *= DISCOUNTED;
         }
+        return payment;
+    }
+
+    private int discountByChickenCount(int payment) {
+        Quantity chickenCount = countChicken();
+        payment -= chickenCount.calculateDiscountAmount();
+
         return payment;
     }
 
