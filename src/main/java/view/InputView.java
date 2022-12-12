@@ -38,4 +38,10 @@ public class InputView {
 
         return Quantity.from(scanner.nextInt());
     }
+
+    public static int inputMenu() {
+        System.out.println("## 등록할 메뉴를 선택하세요.");
+
+        return scanner.nextInt();
+    }
 }
