@@ -6,6 +6,7 @@ import dto.OrdersResponseDto;
 import repository.OrderRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OutputView {
     private static final String TOP_LINE = "┌ ─ ┐";
@@ -19,14 +20,20 @@ public class OutputView {
         final int size = tables.size();
         printLine(TOP_LINE, size);
         printTableNumbers(tables);
-        printLine(getBottomLine(tables), size);
+        printBottomLine(tables);
     }
 
-    private static String getBottomLine(final List<Table> tables) {
-        for (Table table : tables) {
-            if (OrderRepository.hasTable(table)) {
-                return BOTTOM_LINE_WITH_ORDER;
-            }
+    private static void printBottomLine(List<Table> tables) {
+        String bottomLine = tables.stream()
+                .map(OutputView::convertToLine)
+                .collect(Collectors.joining());
+
+        System.out.println(bottomLine);
+    }
+
+    private static String convertToLine(Table table) {
+        if (OrderRepository.hasTable(table)) {
+            return BOTTOM_LINE_WITH_ORDER;
         }
         return BOTTOM_LINE_WITH_NO_ORDER;
     }
