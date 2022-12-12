@@ -12,6 +12,7 @@ public class OutputView {
     private static final String TABLE_FORMAT = "| %s |";
     private static final String BOTTOM_LINE_WITH_NO_ORDER = "└ ─ ┘";
     private static final String BOTTOM_LINE_WITH_ORDER = "└ # ┘";
+    private static final String ERROR_PREFIX = "[ERROR] ";
 
     public static void printTables(final List<Table> tables) {
         System.out.println("## 테이블 목록");
@@ -68,5 +69,10 @@ public class OutputView {
     public static void printPaymentProcess(final int tableNumber) {
         System.out.printf("## %d번 테이블의 결제를 진행합니다.", tableNumber);
         System.out.println();
+    }
+
+    public static void printError(IllegalArgumentException error) {
+        System.out.print(ERROR_PREFIX);
+        System.out.println(error.getMessage());
     }
 }
