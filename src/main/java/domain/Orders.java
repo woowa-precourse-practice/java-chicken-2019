@@ -6,6 +6,7 @@ public class Orders {
 
     private static final int MIN_PAYMENT = 0;
     private static final int NO_QUANTITY = 0;
+    private static final double DISCOUNTED = 0.95;
 
     private final Set<Order> orders;
 
@@ -17,10 +18,10 @@ public class Orders {
         return new Orders(orders);
     }
 
-    public int calculateTotalPayment() {
+    public int calculateTotalPayment(PaymentMethod paymentMethod) {
         int totalPaymentWithoutDiscount = calculateTotalPaymentWithoutDiscount();
 
-        return applyDiscount(totalPaymentWithoutDiscount);
+        return applyDiscount(totalPaymentWithoutDiscount, paymentMethod);
     }
 
     private int calculateTotalPaymentWithoutDiscount() {
@@ -30,10 +31,14 @@ public class Orders {
                 .orElse(MIN_PAYMENT);
     }
 
-    private int applyDiscount(int payment) {
+    private int applyDiscount(int payment, PaymentMethod paymentMethod) {
         Quantity chickenCount = countChicken();
+        payment -= chickenCount.calculateDiscountAmount();
 
-        return payment - chickenCount.calculateDiscountAmount();
+        if (paymentMethod.isCash()) {
+            payment *= DISCOUNTED;
+        }
+        return payment;
     }
 
     private Quantity countChicken() {
