@@ -6,6 +6,7 @@ import dto.OrdersResponseDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OutputView {
     private static final String TOP_LINE = "┌ ─ ┐";
@@ -22,10 +23,17 @@ public class OutputView {
 
     public static void printTables(final List<Table> tables) {
         System.out.println(TABLES_ARE);
-        final int size = tables.size();
-        printLine(TOP_LINE, size);
+        printTopLine(tables);
         printTableNumbers(tables);
         printBottomLine(tables);
+    }
+
+    private static void printTopLine(List<Table> tables) {
+        String topLine = Stream.generate(() -> TOP_LINE)
+                .limit(tables.size())
+                .collect(Collectors.joining());
+
+        System.out.println(topLine);
     }
 
     private static void printBottomLine(List<Table> tables) {
@@ -47,13 +55,6 @@ public class OutputView {
         for (final Menu menu : menus) {
             System.out.println(menu);
         }
-    }
-
-    private static void printLine(final String line, final int count) {
-        for (int index = 0; index < count; index++) {
-            System.out.print(line);
-        }
-        System.out.println();
     }
 
     private static void printTableNumbers(final List<Table> tables) {
