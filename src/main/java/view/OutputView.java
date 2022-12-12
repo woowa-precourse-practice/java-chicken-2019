@@ -69,7 +69,7 @@ public class OutputView {
 
     public static void printPayment(final int payment) {
         System.out.println("## 최종 결제할 금액");
-        System.out.println(payment);
+        System.out.println(payment + "원");
         System.out.println();
     }
 
