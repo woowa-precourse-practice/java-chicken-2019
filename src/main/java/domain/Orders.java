@@ -1,13 +1,13 @@
 package domain;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Orders {
 
     private static final int MIN_PAYMENT = 0;
     private static final int NO_QUANTITY = 0;
-    private static final double DISCOUNTED = 0.95;
 
     private final Set<Order> orders;
 
@@ -15,14 +15,16 @@ public class Orders {
         this.orders = orders;
     }
 
-    public static Orders create(Set<Order> orders) {
-        return new Orders(orders);
+    public static Orders createEmpty() {
+        return new Orders(new HashSet<>());
     }
 
     public int calculatePayment(PaymentMethod paymentMethod) {
+        DiscountPolicy discountPolicy = DiscountPolicy.from(paymentMethod);
         int payment = addUpPayments();
+        Quantity chickenCount = countChicken();
 
-        return applyDiscount(payment, paymentMethod);
+        return discountPolicy.apply(payment, chickenCount);
     }
 
     private int addUpPayments() {
@@ -32,24 +34,21 @@ public class Orders {
                 .orElse(MIN_PAYMENT);
     }
 
-    private int applyDiscount(int payment, PaymentMethod paymentMethod) {
-        payment = discountByChickenCount(payment);
-
-        return discountByPaymentMethod(payment, paymentMethod);
+    public void add(Order order) {
+        Order updated = update(order);
+        orders.add(updated);
     }
 
-    private static int discountByPaymentMethod(int payment, PaymentMethod paymentMethod) {
-        if (paymentMethod.isCash()) {
-            payment *= DISCOUNTED;
-        }
-        return payment;
+    private Order update(Order order) {
+        return orders.stream()
+                .filter(existingOrder -> existingOrder.equals(order))
+                .peek(existingOrder -> existingOrder.combine(order))
+                .findFirst()
+                .orElse(order);
     }
 
-    private int discountByChickenCount(int payment) {
-        Quantity chickenCount = countChicken();
-        payment -= chickenCount.calculateDiscountAmount();
-
-        return payment;
+    public Set<Order> get() {
+        return Collections.unmodifiableSet(orders);
     }
 
     private Quantity countChicken() {
@@ -60,11 +59,11 @@ public class Orders {
                 .orElse(Quantity.from(NO_QUANTITY));
     }
 
-    public void add(Order order) {
-        orders.add(order);
+    public Orders clear() {
+        return Orders.createEmpty();
     }
 
-    public Set<Order> get() {
-        return Collections.unmodifiableSet(orders);
+    public boolean isEmpty() {
+        return orders.isEmpty();
     }
 }

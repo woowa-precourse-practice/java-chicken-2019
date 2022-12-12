@@ -2,25 +2,21 @@ package controller;
 
 import command.MainCommand;
 import domain.Menu;
-import domain.Order;
 import domain.Orders;
 import domain.PaymentMethod;
 import domain.Quantity;
 import domain.Table;
 import dto.OrdersResponseDto;
 import repository.MenuRepository;
-import repository.OrderRepository;
 import repository.TableRepository;
 import view.InputView;
 import view.OutputView;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.Supplier;
 
 public class MainController {
 
-    private static final String NO_ORDERS_ERROR = "주문 내역이 존재하지 않습니다.";
     private static final boolean QUIT = false;
     private static final boolean RUNNABLE = true;
 
@@ -28,34 +24,33 @@ public class MainController {
         boolean runnable = RUNNABLE;
         while (runnable) {
             MainCommand mainCommand = checkError(InputView::inputMainCommand);
-            if (mainCommand.isOrder()) {
-                progressOrder();
-            }
-            if (mainCommand.isPayment()) {
-                checkError(this::progressPayment);
-            }
-            runnable = QUIT;
+            runnable = progressByCommand(mainCommand);
         }
+    }
+
+    private boolean progressByCommand(MainCommand mainCommand) {
+        if (mainCommand.isOrder()) {
+            progressOrder();
+        }
+        if (mainCommand.isPayment()) {
+            checkError(this::progressPayment);
+        }
+        if (mainCommand.isQuit()) {
+            return QUIT;
+        }
+        return RUNNABLE;
     }
 
     private void progressPayment() {
         Table table = checkError(this::readTable);
-        Orders orders = findOrders(table);
+        Orders orders = table.getOrders();
         printOrders(orders);
 
         OutputView.printPaymentProcess(table.getNumber());
         int totalPayment = calculatePayment(orders);
 
         OutputView.printPayment(totalPayment);
-        OrderRepository.clearByTable(table);
-    }
-
-    private Orders findOrders(Table table) {
-        Set<Order> orders = OrderRepository.findByTable(table);
-        if (orders.isEmpty()) {
-            throw new IllegalArgumentException(NO_ORDERS_ERROR);
-        }
-        return Orders.create(orders);
+        table.clearOrders();
     }
 
     private void progressOrder() {
@@ -63,8 +58,7 @@ public class MainController {
         Menu menu = checkError(this::readMenu);
         Quantity quantity = checkError(InputView::inputQuantity);
 
-        Order order = Order.create(table, menu, quantity);
-        OrderRepository.save(order);
+        table.order(menu, quantity);
     }
 
     private void printTables() {

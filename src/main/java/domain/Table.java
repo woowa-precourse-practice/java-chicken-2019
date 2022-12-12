@@ -3,10 +3,15 @@ package domain;
 import java.util.Objects;
 
 public class Table {
+
+    private static final String NO_ORDERS_ERROR = "주문 내역이 존재하지 않습니다.";
+
     private final int number;
+    private Orders orders;
 
     public Table(final int number) {
         this.number = number;
+        orders = Orders.createEmpty();
     }
 
     public boolean hasSameNumber(int number) {
@@ -15,6 +20,26 @@ public class Table {
 
     public int getNumber() {
         return number;
+    }
+
+    public Orders getOrders() {
+        if (orders.isEmpty()) {
+            throw new IllegalArgumentException(NO_ORDERS_ERROR);
+        }
+        return orders;
+    }
+
+    public void clearOrders() {
+        orders = orders.clear();
+    }
+
+    public void order(Menu menu, Quantity quantity) {
+        Order order = Order.create(menu, quantity);
+        orders.add(order);
+    }
+
+    public boolean hasNoOrders() {
+        return orders.isEmpty();
     }
 
     @Override

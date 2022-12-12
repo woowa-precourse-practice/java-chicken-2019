@@ -3,22 +3,16 @@ package domain;
 import java.util.Objects;
 
 public class Order {
-    private final Table table;
     private final Menu menu;
     private Quantity quantity;
 
-    public Order(Table table, Menu menu, Quantity quantity) {
-        this.table = table;
+    public Order(Menu menu, Quantity quantity) {
         this.menu = menu;
         this.quantity = quantity;
     }
 
-    public static Order create(Table table, Menu menu, Quantity quantity) {
-        return new Order(table, menu, quantity);
-    }
-
-    public boolean hasSameTable(Table table) {
-        return this.table.equals(table);
+    public static Order create(Menu menu, Quantity quantity) {
+        return new Order(menu, quantity);
     }
 
     public void combine(Order order) {
@@ -37,21 +31,17 @@ public class Order {
         return menu;
     }
 
-    public Table getTable() {
-        return table;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(table, order.table) && Objects.equals(menu, order.menu);
+        return Objects.equals(menu, order.menu);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(table, menu);
+        return Objects.hash(menu);
     }
 
     public boolean isChicken() {

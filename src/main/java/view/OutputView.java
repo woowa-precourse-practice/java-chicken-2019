@@ -3,7 +3,6 @@ package view;
 import domain.Menu;
 import domain.Table;
 import dto.OrdersResponseDto;
-import repository.OrderRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,10 +37,10 @@ public class OutputView {
     }
 
     private static String convertToLine(Table table) {
-        if (OrderRepository.hasTable(table)) {
-            return BOTTOM_LINE_WITH_ORDER;
+        if (table.hasNoOrders()) {
+            return BOTTOM_LINE_WITH_NO_ORDER;
         }
-        return BOTTOM_LINE_WITH_NO_ORDER;
+        return BOTTOM_LINE_WITH_ORDER;
     }
 
     public static void printMenus(final List<Menu> menus) {
