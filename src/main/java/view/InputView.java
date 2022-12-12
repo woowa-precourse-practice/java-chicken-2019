@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class InputView {
     private static final String MAIN_COMMAND_IS = "## 메인화면";
     private static final String REQUEST_MAIN_COMMAND = "## 원하는 기능을 선택하세요.";
-    private static final String REQUEST_TABLE_FOR_ORDER = "## 주문할 테이블을 선택하세요.";
+    private static final String REQUEST_TABLE_FOR_ORDER = "## 테이블을 선택하세요.";
 
     private static final Scanner scanner = new Scanner(System.in);
 
