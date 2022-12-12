@@ -64,4 +64,9 @@ public class OutputView {
         System.out.println(payment);
         System.out.println();
     }
+
+    public static void printPaymentProcess(final int tableNumber) {
+        System.out.printf("## %d번 테이블의 결제를 진행합니다.", tableNumber);
+        System.out.println();
+    }
 }
