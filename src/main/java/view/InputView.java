@@ -1,6 +1,7 @@
 package view;
 
 import command.MainCommand;
+import domain.Quantity;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -14,8 +15,8 @@ public class InputView {
 
     public static MainCommand inputMainCommand() {
         printMain();
-
         System.out.println(REQUEST_MAIN_COMMAND);
+
         return MainCommand.from(scanner.nextInt());
     }
 
@@ -28,6 +29,13 @@ public class InputView {
 
     public static int inputTableNumber() {
         System.out.println(REQUEST_TABLE_FOR_ORDER);
+
         return scanner.nextInt();
+    }
+
+    public static Quantity inputQuantity() {
+        System.out.println("## 메뉴의 수량을 입력하세요.");
+
+        return Quantity.from(scanner.nextInt());
     }
 }
