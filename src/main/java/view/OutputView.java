@@ -14,9 +14,15 @@ public class OutputView {
     private static final String BOTTOM_LINE_WITH_NO_ORDER = "└ ─ ┘";
     private static final String BOTTOM_LINE_WITH_ORDER = "└ # ┘";
     private static final String ERROR_PREFIX = "[ERROR] ";
+    private static final String PAYMENT_PROCESS_FORMAT = "## %d번 테이블의 결제를 진행합니다.";
+    private static final String PAYMENT_FORMAT = "%d원";
+    private static final String TOTAL_PAYMENT_IS = "## 최종 결제할 금액";
+    private static final String ORDER_LIST_IS = "## 주문 내역";
+    private static final String ORDER_INFO = "메뉴 수량 금액";
+    private static final String TABLES_ARE = "## 테이블 목록";
 
     public static void printTables(final List<Table> tables) {
-        System.out.println("## 테이블 목록");
+        System.out.println(TABLES_ARE);
         final int size = tables.size();
         printLine(TOP_LINE, size);
         printTableNumbers(tables);
@@ -59,8 +65,8 @@ public class OutputView {
     }
 
     public static void printOrders(final OrdersResponseDto responseDto) {
-        System.out.println("## 주문 내역");
-        System.out.println("메뉴 수량 금액");
+        System.out.println(ORDER_LIST_IS);
+        System.out.println(ORDER_INFO);
 
         responseDto.get()
                 .forEach(System.out::println);
@@ -68,13 +74,14 @@ public class OutputView {
     }
 
     public static void printPayment(final int payment) {
-        System.out.println("## 최종 결제할 금액");
-        System.out.println(payment + "원");
+        System.out.println(TOTAL_PAYMENT_IS);
+        System.out.printf(PAYMENT_FORMAT, payment);
+        System.out.println();
         System.out.println();
     }
 
     public static void printPaymentProcess(final int tableNumber) {
-        System.out.printf("## %d번 테이블의 결제를 진행합니다.", tableNumber);
+        System.out.printf(PAYMENT_PROCESS_FORMAT, tableNumber);
         System.out.println();
     }
 
