@@ -27,4 +27,9 @@ public class OrderRepository {
     public static void clearByTable(Table table) {
         orders.removeIf(order -> order.hasSameTable(table));
     }
+
+    public static boolean hasTable(Table table) {
+        return orders.stream()
+                .anyMatch(order -> order.hasSameTable(table));
+    }
 }

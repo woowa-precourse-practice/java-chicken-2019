@@ -43,6 +43,13 @@ class OrderRepositoryTest {
                 .containsExactly(Quantity.from(3));
     }
 
+    @Test
+    void 해당_테이블에_주문_내역이_존재하는지_확인() {
+        OrderRepository.save(order);
+
+        assertThat(OrderRepository.hasTable(table)).isTrue();
+    }
+
     @AfterEach
     void clear() {
         OrderRepository.clearByTable(table);

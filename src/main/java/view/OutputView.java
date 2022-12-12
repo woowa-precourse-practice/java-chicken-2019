@@ -1,6 +1,7 @@
 package view;
 
 import domain.Menu;
+import domain.OrderRepository;
 import domain.Table;
 
 import java.util.List;
@@ -8,14 +9,24 @@ import java.util.List;
 public class OutputView {
     private static final String TOP_LINE = "┌ ─ ┐";
     private static final String TABLE_FORMAT = "| %s |";
-    private static final String BOTTOM_LINE = "└ ─ ┘";
+    private static final String BOTTOM_LINE_WITH_NO_ORDER = "└ ─ ┘";
+    private static final String BOTTOM_LINE_WITH_ORDER = "└ # ┘";
 
     public static void printTables(final List<Table> tables) {
         System.out.println("## 테이블 목록");
         final int size = tables.size();
         printLine(TOP_LINE, size);
         printTableNumbers(tables);
-        printLine(BOTTOM_LINE, size);
+        printLine(getBottomLine(tables), size);
+    }
+
+    private static String getBottomLine(final List<Table> tables) {
+        for (Table table : tables) {
+            if (OrderRepository.hasTable(table)) {
+                return BOTTOM_LINE_WITH_ORDER;
+            }
+        }
+        return BOTTOM_LINE_WITH_NO_ORDER;
     }
 
     public static void printMenus(final List<Menu> menus) {
