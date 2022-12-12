@@ -15,9 +15,12 @@ import view.InputView;
 import view.OutputView;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class MainController {
+
+    private static final String NO_ORDERS_ERROR = "주문 내역이 존재하지 않습니다.";
 
     public void run() {
         while (true) {
@@ -36,7 +39,7 @@ public class MainController {
 
     private void progressPayment() {
         Table table = checkError(this::readTable);
-        Orders orders = Orders.create(OrderRepository.findByTable(table));
+        Orders orders = checkError(() -> createOrder(table));
         printOrders(orders);
 
         OutputView.printPaymentProcess(table.getNumber());
@@ -44,6 +47,14 @@ public class MainController {
 
         OutputView.printPayment(totalPayment);
         OrderRepository.clearByTable(table);
+    }
+
+    private Orders createOrder(Table table) {
+        Set<Order> orders = OrderRepository.findByTable(table);
+        if (orders.isEmpty()) {
+            throw new IllegalArgumentException(NO_ORDERS_ERROR);
+        }
+        return Orders.create(orders);
     }
 
     private void progressOrder() {
