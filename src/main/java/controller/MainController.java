@@ -30,7 +30,7 @@ public class MainController {
 
     private boolean progressByCommand(MainCommand mainCommand) {
         if (mainCommand.isOrder()) {
-            progressOrder();
+            checkError(this::progressOrder);
         }
         if (mainCommand.isPayment()) {
             checkError(this::progressPayment);
