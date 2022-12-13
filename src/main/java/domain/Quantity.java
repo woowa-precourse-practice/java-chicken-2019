@@ -14,11 +14,11 @@ public class Quantity {
     private final int amount;
 
     public Quantity(int amount) {
+        validate(amount);
         this.amount = amount;
     }
 
     public static Quantity from(int amount) {
-        validate(amount);
         return new Quantity(amount);
     }
 
