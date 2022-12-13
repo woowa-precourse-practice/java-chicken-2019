@@ -1,10 +1,15 @@
-package domain;
+package repository;
+
+import domain.Category;
+import domain.Menu;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class MenuRepository {
+    private static final String NO_SUCH_MENU_NUMBER = "해당 메뉴를 찾을 수 없습니다";
+
     private static final List<Menu> menus = new ArrayList<>();
 
     static {
@@ -20,5 +25,12 @@ public class MenuRepository {
 
     public static List<Menu> menus() {
         return Collections.unmodifiableList(menus);
+    }
+
+    public static Menu findByNumber(int number) {
+        return menus().stream()
+                .filter(menu -> menu.hasSameNumber(number))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(NO_SUCH_MENU_NUMBER));
     }
 }
